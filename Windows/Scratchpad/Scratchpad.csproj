@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>App/app.manifest</ApplicationManifest>
+    <AssemblyName>Scratchpad</AssemblyName>
+    <RootNamespace>Scratchpad</RootNamespace>
+    <Version>0.1.0</Version>
+    <!--
+      UseWindowsForms is pulled in only for System.Windows.Forms.Screen
+      (per-monitor enumeration), NotifyIcon (WPF has no tray icon API), and
+      System.Windows.Forms.ColorDialog -- all first-party .NET/Microsoft
+      APIs, not a third-party dependency, mirroring how the macOS app pulls
+      in AppKit alongside SwiftUI for the same class of gaps.
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\PencilCursor.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AppIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      The SDK's implicit WPF item globbing only auto-detects a file
+      literally at "App.xaml" in the project root as the application entry
+      point; since it lives in App/App.xaml here (to match the macOS app's
+      App/ folder), it must be declared explicitly and removed from the
+      generic Page glob it would otherwise also match.
+    -->
+    <Page Remove="App/App.xaml" />
+    <ApplicationDefinition Include="App/App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+</Project>
