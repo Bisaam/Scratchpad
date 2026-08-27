@@ -4,6 +4,9 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Scratchpad.Hotkeys;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using Cursor = System.Windows.Input.Cursor;
+using Cursors = System.Windows.Input.Cursors;
 
 namespace Scratchpad.Preferences;
 

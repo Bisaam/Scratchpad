@@ -1,3 +1,4 @@
+using System.IO;
 using Scratchpad.Drawing;
 using Scratchpad.Overlay;
 using Scratchpad.Persistence;

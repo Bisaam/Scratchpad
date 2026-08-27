@@ -12,13 +12,13 @@ public sealed record AppSettings
     public required KeyCombo GlobalShortcut { get; init; }
     public required double AnimationDuration { get; init; }
     public required double BackgroundDimOpacity { get; init; }
-    public required DisplayMode DisplayMode { get; init; }
+    public required OverlayDisplayMode DisplayMode { get; init; }
     public required StrokeColor StrokeColor { get; init; }
     public required double StrokeWidth { get; init; }
 
     /// Which screens the overlay appears on when toggled.
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum DisplayMode
+    public enum OverlayDisplayMode
     {
         AllDisplays,
         CurrentDisplayOnly,
@@ -35,7 +35,7 @@ public sealed record AppSettings
         GlobalShortcut = KeyCombo.Default,
         AnimationDuration = 0.25,
         BackgroundDimOpacity = 0.30,
-        DisplayMode = DisplayMode.AllDisplays,
+        DisplayMode = OverlayDisplayMode.AllDisplays,
         StrokeColor = StrokeColor.Default,
         StrokeWidth = Stroke.DefaultLineWidth,
     };

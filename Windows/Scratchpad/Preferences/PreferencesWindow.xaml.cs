@@ -22,9 +22,17 @@ public partial class PreferencesWindow : Window
 
     public PreferencesWindow(SettingsStore settingsStore, ILaunchAtLoginService launchAtLoginService)
     {
-        InitializeComponent();
+        // Fields must be assigned, and _isLoadingValues raised, before
+        // InitializeComponent(): loading the XAML sets each Slider's
+        // initial Value/Minimum, which raises ValueChanged synchronously
+        // during BAML parsing -- before this constructor would otherwise
+        // reach its own body. Without this ordering, OnAnimationDurationChanged
+        // et al. run with _settingsStore still null and crash the app on
+        // startup with a NullReferenceException.
+        _isLoadingValues = true;
         _settingsStore = settingsStore;
         _launchAtLoginService = launchAtLoginService;
+        InitializeComponent();
 
         _shortcutRecorder = new KeyRecorderControl(_settingsStore.Settings.GlobalShortcut);
         _shortcutRecorder.ComboChanged += combo =>
@@ -39,7 +47,7 @@ public partial class PreferencesWindow : Window
         _isLoadingValues = true;
         var settings = _settingsStore.Settings;
 
-        DisplayModeComboBox.SelectedIndex = settings.DisplayMode == AppSettings.DisplayMode.AllDisplays ? 0 : 1;
+        DisplayModeComboBox.SelectedIndex = settings.DisplayMode == AppSettings.OverlayDisplayMode.AllDisplays ? 0 : 1;
         LaunchAtLoginCheckBox.IsChecked = _launchAtLoginService.IsEnabled;
 
         DimOpacitySlider.Value = settings.BackgroundDimOpacity;
@@ -56,8 +64,8 @@ public partial class PreferencesWindow : Window
     {
         if (_isLoadingValues) return;
         var mode = DisplayModeComboBox.SelectedIndex == 0
-            ? AppSettings.DisplayMode.AllDisplays
-            : AppSettings.DisplayMode.CurrentDisplayOnly;
+            ? AppSettings.OverlayDisplayMode.AllDisplays
+            : AppSettings.OverlayDisplayMode.CurrentDisplayOnly;
         _settingsStore.Settings = _settingsStore.Settings with { DisplayMode = mode };
     }
 

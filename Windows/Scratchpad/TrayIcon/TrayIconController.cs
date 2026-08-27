@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Scratchpad.Overlay;
 using Scratchpad.Preferences;
