@@ -14,16 +14,27 @@
     <!--
       UseWindowsForms is pulled in only for System.Windows.Forms.Screen
       (per-monitor enumeration), NotifyIcon (WPF has no tray icon API), and
-      System.Windows.Forms.ColorDialog -- all first-party .NET/Microsoft
+      System.Windows.Forms.ColorDialog. All are first-party .NET/Microsoft
       APIs, not a third-party dependency, mirroring how the macOS app pulls
       in AppKit alongside SwiftUI for the same class of gaps.
     -->
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Resources\PencilCursor.cur">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <!--
+      UseWindowsForms injects System.Drawing and System.Windows.Forms as
+      implicit GLOBAL usings, which collide with the WPF namespaces this
+      app is built on (Brushes, Color, Point, Pen, SystemColors, Button,
+      FlowDirection, HorizontalAlignment, Cursor...). This is a WPF app that
+      touches WinForms in only two files (TrayIconController, ScreenObserving),
+      both of which import those namespaces explicitly, so the global usings
+      are removed here to let WPF types resolve unambiguously everywhere else.
+    -->
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\AppIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

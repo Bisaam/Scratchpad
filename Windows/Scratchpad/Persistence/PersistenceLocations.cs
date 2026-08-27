@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Scratchpad.Persistence;
 
 /// Centralizes every on-disk path Scratchpad writes to, so no other file

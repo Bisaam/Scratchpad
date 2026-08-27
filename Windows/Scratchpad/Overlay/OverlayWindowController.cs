@@ -13,6 +13,7 @@ namespace Scratchpad.Overlay;
 /// macOS app's `OverlayWindowController`.
 public sealed class OverlayWindowController
 {
+    private const int SwHide = 0;
     private const int SwShowNoActivate = 4;
 
     [DllImport("user32.dll")]
@@ -60,7 +61,21 @@ public sealed class OverlayWindowController
 
     public void Hide(TimeSpan duration)
     {
-        _animator.FadeOut(_window, duration, () => _window.Hide());
+        // Deliberately not WPF's own Window.Hide(): mixing it with the raw
+        // ShowWindow(SW_SHOWNOACTIVATE) re-show in Show() above leaves WPF's
+        // internal visibility tracking out of sync with the native window,
+        // so re-showing after a Hide() renders nothing on the *second*
+        // show/hide cycle onward. Once the hwnd exists, hiding goes through
+        // the same raw Win32 path as showing, for the same reason Show()
+        // does: consistency, not just avoiding activation.
+        _animator.FadeOut(_window, duration, () =>
+        {
+            var hwnd = new WindowInteropHelper(_window).Handle;
+            if (hwnd != nint.Zero)
+            {
+                ShowWindow(hwnd, SwHide);
+            }
+        });
     }
 
     /// Erases this display's drawing. Never touches overlay visibility.

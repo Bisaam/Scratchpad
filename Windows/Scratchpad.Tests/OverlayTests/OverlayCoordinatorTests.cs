@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using Scratchpad.Animations;
@@ -55,7 +56,7 @@ public class OverlayCoordinatorTests
         return (coordinator, overlayState, drawingStoreFactory);
     }
 
-    [Fact]
+    [StaFact]
     public void ToggleNeverMutatesAnyDrawingStore()
     {
         var (coordinator, _, factory) = MakeCoordinator();
@@ -74,7 +75,7 @@ public class OverlayCoordinatorTests
         Assert.Equal(strokesBeforeToggle.Select(s => s.Id), store.Strokes.Select(s => s.Id));
     }
 
-    [Fact]
+    [StaFact]
     public void ToggleFlipsOverlayVisibility()
     {
         var (coordinator, overlayState, _) = MakeCoordinator();
@@ -85,7 +86,7 @@ public class OverlayCoordinatorTests
         Assert.False(overlayState.IsVisible);
     }
 
-    [Fact]
+    [StaFact]
     public void ClearAllNeverMutatesOverlayVisibility()
     {
         var (coordinator, overlayState, _) = MakeCoordinator();

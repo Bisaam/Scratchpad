@@ -105,7 +105,7 @@ public sealed class OverlayCoordinator
 
     private IReadOnlyList<Screen> ScreensForCurrentDisplayMode()
     {
-        if (_settingsStore.Settings.DisplayMode == AppSettings.DisplayMode.CurrentDisplayOnly)
+        if (_settingsStore.Settings.DisplayMode == AppSettings.OverlayDisplayMode.CurrentDisplayOnly)
         {
             var cursorPosition = Cursor.Position;
             var screenUnderCursor = _screenObserving.Screens.FirstOrDefault(s => s.Bounds.Contains(cursorPosition));

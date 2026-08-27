@@ -4,6 +4,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Scratchpad.Rendering;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using Point = System.Windows.Point;
 
 namespace Scratchpad.Drawing;
 
@@ -31,7 +33,6 @@ public sealed class DrawingCanvas : Canvas
         // visually-transparent surface.
         Background = Brushes.Transparent;
         Focusable = false;
-        Cursor = PencilCursor.Cursor;
         RenderExistingStrokes();
     }
 
